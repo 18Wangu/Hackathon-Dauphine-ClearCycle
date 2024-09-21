@@ -34,3 +34,10 @@ const Login = () => {
 };
 
 export default Login;
+
+/*
+A FAIRE :
+- Mettre logo ClearCylce
+- Faire progress bar avec emoji et information sur le transporteur etc
+
+*/

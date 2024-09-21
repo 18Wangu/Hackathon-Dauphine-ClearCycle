@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 //import Image1 from '../public/coca.png';
 
 interface DataItem {
@@ -79,12 +80,6 @@ const Dashboard = () => {
       <div className='flex items-center mb-5'>
         <span className='text-3xl'>♻️</span>
         <h1 className="text-3xl font-bold text-gray-800 mr-7">Coca</h1>
-        {/* <Image
-          src={Image1}
-          alt="Coca"
-          width={30}
-          height={30}
-        /> */}
       </div>
 
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -133,6 +128,11 @@ const Dashboard = () => {
               <td className="py-3 px-6">
                 <a href="#" className="hover:text-blue-500">🔗 {item.transaction}</a>
               </td>
+              <td>
+                <Link href="../qrcode">
+                🖨️
+                </Link>
+            </td>
             </tr>
           ))}
         </tbody>
