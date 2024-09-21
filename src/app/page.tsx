@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Image1 from '../public/coca.png';
+import { useWalletAuth } from "../../modules/wallet/hooks/useWalletAuth";
 
 interface DataItem {
   id: string;
@@ -15,6 +16,7 @@ interface DataItem {
 }
 
 const Dashboard = () => {
+  const { isConnected, connect, wallet } = useWalletAuth();
   const [data, setData] = useState<DataItem[]>([
     { id: '001', type: 'Bois', weight: '100 kg', date: '10/08/2024', status: 'depart-entreprise', transaction: '0x2324ed720d761' },
     { id: '002', type: 'Plastique', weight: '200 kg', date: '15/09/2024', status: 'en-transport', transaction: '0x2ab965f727ade' },
@@ -85,6 +87,13 @@ const Dashboard = () => {
           height={30}
         />
       </div>
+
+      {/* <h2 className="text-2xl font-bold text-gray-800 mb-5">Tableau de bord</h2>
+      {isConnected ? (
+        <>{wallet?.getAddress()}</>
+      ) : (
+        <button onClick={connect} className='text-blue-600'>Connect Wallet</button>
+      )} */}
 
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
