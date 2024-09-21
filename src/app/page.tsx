@@ -1,14 +1,63 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Image1 from '../public/coca.png';
 
+interface DataItem {
+  id: string;
+  type: string;
+  weight: string;
+  date: string;
+  status: string;
+  transaction: string;
+  [key: string]: string;
+}
+
 const Dashboard = () => {
-  const data = [
-    { id: '001', type: 'Bois', weight: '100 kg', date: '20/09/2024', status: 'depart-entreprise', transaction: '0x123456789' },
-    { id: '002', type: 'Plastique', weight: '200 kg', date: '21/09/2024', status: 'en-transport', transaction: '0x123896789' },
-    { id: '003', type: 'Métal', weight: '300 kg', date: '22/09/2024', status: 'centre-de-tri', transaction: '0x998456789' },
-    { id: '003', type: 'Métal', weight: '300 kg', date: '22/09/2024', status: 'incineration', transaction: '0x978477789' },
-  ];
+  const [data, setData] = useState<DataItem[]>([
+    { id: '001', type: 'Bois', weight: '100 kg', date: '10/08/2024', status: 'depart-entreprise', transaction: '0x2324ed720d761' },
+    { id: '002', type: 'Plastique', weight: '200 kg', date: '15/09/2024', status: 'en-transport', transaction: '0x2ab965f727ade' },
+    { id: '003', type: 'Métal', weight: '300 kg', date: '16/09/2024', status: 'centre-de-tri', transaction: '0xaa541d479321f' },
+    { id: '004', type: 'Bois', weight: '250 kg', date: '16/09/2024', status: 'incineration', transaction: '0x4bfe0796267ee' },
+  ]);
+
+  // Function to generate the next unique ID (auto-increment)
+  const generateNextId = () => {
+    const lastId = data.length > 0 ? parseInt(data[data.length - 1].id) : 0;
+    return (lastId + 1).toString().padStart(3, '0');
+  };
+
+  // Function to generate a random transaction hash
+  const generateTransaction = () => {
+    return '0x' + Math.floor(Math.random() * 0xfffffffffffff).toString(16);
+  };
+
+  // Function to format today's date as 'DD/MM/YYYY'
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toLocaleDateString('fr-FR'); // Format date to 'DD/MM/YYYY'
+  };
+
+  // Handle add new row when "+" is clicked
+  const handleAddRow = () => {
+    const newRow = {
+      id: generateNextId(),
+      type: '', // User will input
+      weight: '', // User will input
+      date: getCurrentDate(),
+      status: 'depart-entreprise',
+      transaction: generateTransaction(),
+    };
+    setData([...data, newRow]);
+  };
+
+  // Handle input change for type and weight
+  const handleInputChange = (index: number, field: string, value: string) => {
+    const updatedData = [...data];
+    updatedData[index][field] = value; // Now TypeScript will accept this
+    setData(updatedData);
+  };
 
   const statusClasses = (status: string) => {
     switch (status) {
@@ -46,15 +95,31 @@ const Dashboard = () => {
             <th className="py-3 px-6 text-left">Date d’ajout</th>
             <th className="py-3 px-6 text-left">Statut actuel</th>
             <th className="py-3 px-6 text-left">Transactions blockchain</th>
-            <th className="py-3 px-6 text-left text-3xl hover:text-blue-500 hover:cursor-pointer">+</th>
+            <th className="py-3 px-6 text-left text-3xl hover:text-blue-500 hover:cursor-pointer" onClick={handleAddRow}>+</th>
           </tr>
         </thead>
         <tbody className="text-gray-600 text-sm">
-          {data.map((item) => (
+          {data.map((item, index) => (
             <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-100">
               <td className="py-3 px-6">{item.id}</td>
-              <td className="py-3 px-6">{item.type}</td>
-              <td className="py-3 px-6">{item.weight}</td>
+              <td className="py-3 px-6">
+                <input
+                  type="text"
+                  value={item.type}
+                  onChange={(e) => handleInputChange(index, 'type', e.target.value)}
+                  className="border border-gray-300 rounded p-1"
+                  placeholder="Type de déchet"
+                />
+              </td>
+              <td className="py-3 px-6">
+                <input
+                  type="text"
+                  value={item.weight}
+                  onChange={(e) => handleInputChange(index, 'weight', e.target.value)}
+                  className="border border-gray-300 rounded p-1"
+                  placeholder="Poids"
+                />
+              </td>
               <td className="py-3 px-6">{item.date}</td>
               <td className="py-3 px-6">
                 <span className={`py-1 px-3 rounded-full text-xs font-bold ${statusClasses(item.status)}`}>
