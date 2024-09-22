@@ -1,4 +1,4 @@
-#Hackathon Dauphine
+# Hackathon Dauphine
 
 **ClearCycle : Traçabilité des Déchets via Blockchain**
 
